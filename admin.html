@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0f172a">
+  <title>XiQi Product Admin</title>
+  <meta name="description" content="XiQi product admin for managing Supabase product data and product images.">
+  <meta name="keywords" content="XiQi admin, product management, Supabase products">
+  <meta property="og:title" content="XiQi Product Admin">
+  <meta property="og:description" content="Manage XiQi product data and product images.">
+  <meta property="og:image" content="images/products-banner.jpg">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="icon" href="images/logo.png">
+</head>
+<body>
+  <main class="admin-shell">
+    <section class="admin-header">
+      <div>
+        <p>XiQi Technology</p>
+        <h1>Product Admin</h1>
+      </div>
+      <div class="admin-header-actions">
+        <a href="product.html">View Products</a>
+        <button id="logoutButton" type="button">Logout</button>
+      </div>
+    </section>
+
+    <section class="admin-panel">
+        <form id="productForm" class="product-form">
+        <input type="hidden" name="id">
+        <input type="hidden" name="current_image_url">
+        <input type="hidden" name="current_video_url">
+        <input type="hidden" name="current_gallery">
+        <input type="hidden" name="remove_product_video" value="">
+
+        <div class="form-grid">
+          <label>
+            Product Name
+            <input type="text" name="name" required>
+          </label>
+
+          <label>
+            Category
+            <input type="text" name="category" placeholder="Phone Case">
+          </label>
+
+          <label>
+            Sort Order
+            <input type="number" name="sort_order" value="0">
+          </label>
+
+          <label>
+            Status
+            <select name="status">
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </label>
+
+          <label>
+            Price
+            <input type="text" name="price" placeholder="Contact for price">
+          </label>
+
+          <label>
+            MOQ
+            <input type="text" name="moq" placeholder="100 PCS">
+          </label>
+
+          <label>
+            Material
+            <input type="text" name="material" placeholder="Tempered Glass">
+          </label>
+
+          <label>
+            Packaging
+            <input type="text" name="packaging" placeholder="Customized">
+          </label>
+
+          <label>
+            Lead Time
+            <input type="text" name="lead_time" placeholder="5-7 Days">
+          </label>
+        </div>
+
+        <label>
+          Short Description
+          <input type="text" name="short_desc" placeholder="OEM mobile accessory product">
+        </label>
+
+        <label>
+          Description
+          <textarea name="description" rows="4"></textarea>
+        </label>
+
+        <label>
+          Features
+          <textarea name="features" rows="4" placeholder="One feature per line"></textarea>
+        </label>
+
+        <label>
+          Product Image
+          <input type="file" id="imageFile" accept="image/*">
+        </label>
+
+        <label>
+          Product Gallery Upload
+          <input type="file" id="galleryFiles" accept="image/*" multiple>
+        </label>
+
+        <div id="productGalleryList" class="gallery-manage-list"></div>
+
+        <label>
+          Product Video Upload
+          <input type="file" id="productVideoFile" accept="video/mp4,video/*">
+        </label>
+
+        <div class="form-actions compact-actions">
+          <button id="removeProductVideo" type="button" hidden>Delete Product Video</button>
+          <span id="productVideoStatus"></span>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit">Add Product</button>
+          <button id="cancelEdit" type="button" hidden>Cancel Edit</button>
+          <span id="formStatus"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-panel">
+      <div class="section-title">
+        <p>Products</p>
+        <button id="refreshProducts" type="button">Refresh</button>
+      </div>
+      <div id="productList" class="product-list"></div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="section-title">
+        <p>Category Management</p>
+        <button id="refreshCategories" type="button">Refresh</button>
+      </div>
+
+      <form id="categoryForm" class="product-form admin-subform">
+        <input type="hidden" name="id">
+        <input type="hidden" name="current_image_url">
+
+        <div class="form-grid">
+          <label>
+            Category Name
+            <input type="text" name="name" required placeholder="Phone Cases">
+          </label>
+
+          <label>
+            Slug
+            <input type="text" name="slug" placeholder="phone-cases">
+          </label>
+
+          <label>
+            Sort Order
+            <input type="number" name="sort_order" value="0">
+          </label>
+
+          <label>
+            Status
+            <select name="status">
+              <option value="published">Published</option>
+              <option value="hidden">Hidden</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          Description
+          <input type="text" name="description" placeholder="Optional category description">
+        </label>
+
+        <label>
+          Link
+          <input type="text" name="link" placeholder="product.html?category=phone-cases">
+        </label>
+
+        <label>
+          Category Image Optional
+          <input type="file" id="categoryImageFile" accept="image/*">
+        </label>
+
+        <div class="form-actions">
+          <button type="submit">Add Category</button>
+          <button id="cancelCategoryEdit" type="button" hidden>Cancel Edit</button>
+          <span id="categoryStatus"></span>
+        </div>
+      </form>
+
+      <div id="categoryList" class="product-list"></div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="section-title">
+        <p>Factory Video Management</p>
+        <button id="refreshFactoryVideos" type="button">Refresh</button>
+      </div>
+
+      <form id="factoryForm" class="product-form admin-subform">
+        <input type="hidden" name="id">
+        <input type="hidden" name="current_video_url">
+
+        <div class="form-grid">
+          <label>
+            Video Title
+            <input type="text" name="title" required>
+          </label>
+
+          <label>
+            Sort Order
+            <input type="number" name="sort_order" value="0">
+          </label>
+
+          <label>
+            Status
+            <select name="status">
+              <option value="published">Published</option>
+              <option value="draft">Hidden</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          Description
+          <input type="text" name="description" placeholder="Optional video description">
+        </label>
+
+        <label>
+          MP4 Video
+          <input type="file" id="factoryVideoFile" accept="video/mp4,video/*">
+        </label>
+
+        <div class="form-actions">
+          <button type="submit">Add Video</button>
+          <button id="cancelFactoryEdit" type="button" hidden>Cancel Edit</button>
+          <span id="factoryStatus"></span>
+        </div>
+      </form>
+
+      <div id="factoryVideoList" class="product-list"></div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="section-title">
+        <p>Inquiry Management</p>
+        <button id="refreshInquiries" type="button">Refresh</button>
+      </div>
+      <div id="inquiryList" class="inquiry-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin-auth.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

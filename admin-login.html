@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0f172a">
+  <title>XiQi Admin Login</title>
+  <meta name="description" content="Secure XiQi admin login.">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="icon" href="images/logo.png">
+</head>
+<body class="login-page">
+  <main class="login-shell">
+    <section class="login-card">
+      <p>XiQi Technology</p>
+      <h1>Admin Login</h1>
+
+      <form id="loginForm" class="login-form">
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+
+        <label>
+          Password
+          <input type="password" name="password" required>
+        </label>
+
+        <button type="submit">Login</button>
+        <span id="loginStatus"></span>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin-login.js"></script>
+</body>
+</html>
