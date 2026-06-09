@@ -1,4 +1,4 @@
-﻿*{
+*{
   margin:0;
   padding:0;
   box-sizing:border-box;
@@ -354,9 +354,11 @@ body{
 
 .category-card img{
   width:100%;
-  height:160px;
-  object-fit:cover;
+  aspect-ratio:900 / 620;
+  height:auto;
+  object-fit:contain;
   display:block;
+  background:#fff;
   transition:.35s;
 }
 
@@ -939,9 +941,11 @@ button:hover{
 
 .product-card img{
   width:100%;
-  height:220px;
-  object-fit:cover;
+  aspect-ratio:900 / 620;
+  height:auto;
+  object-fit:contain;
   display:block;
+  background:#fff;
 }
 
 .product-info{
@@ -2058,9 +2062,11 @@ body:has(.detail-page){
 
 .related-card img{
   width:100%;
-  height:170px;
+  aspect-ratio:900 / 620;
+  height:auto;
   display:block;
-  object-fit:cover;
+  object-fit:contain;
+  background:#fff;
   transition:transform .35s ease;
 }
 
@@ -2143,7 +2149,7 @@ body:has(.detail-page){
 #products .category-card{
   display:flex;
   flex-direction:column;
-  height:310px;
+  height:auto;
   border:1px solid rgba(203,213,225,.56);
   border-radius:18px;
   background:rgba(255,255,255,.78);
@@ -2166,12 +2172,13 @@ body:has(.detail-page){
 
 #products .category-card img{
   width:100%;
-  height:240px;
-  flex:0 0 240px;
+  aspect-ratio:900 / 620;
+  height:auto;
+  flex:0 0 auto;
   border-radius:18px 18px 14px 14px;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
-  background:#eaf3fb;
+  background:#fff;
   opacity:0;
   animation:categoryImageIn .55s ease forwards;
 }
@@ -2238,12 +2245,13 @@ body:has(.detail-page){
 
 @media(max-width:1100px){
   #products .category-card{
-    height:292px;
+    height:auto;
   }
 
   #products .category-card img{
-    height:224px;
-    flex-basis:224px;
+    aspect-ratio:900 / 620;
+    height:auto;
+    flex-basis:auto;
   }
 }
 
@@ -2257,12 +2265,13 @@ body:has(.detail-page){
   }
 
   #products .category-card{
-    height:312px;
+    height:auto;
   }
 
   #products .category-card img{
-    height:240px;
-    flex-basis:240px;
+    aspect-ratio:900 / 620;
+    height:auto;
+    flex-basis:auto;
   }
 
   #products .category-info{
@@ -2905,7 +2914,14 @@ html[dir="rtl"] .product-search input{
     min-height:0!important;
     max-height:none!important;
     flex-basis:auto!important;
-    object-fit:cover;
+  }
+
+  #products .category-card img,
+  .category-card img,
+  .product-card img,
+  .related-card img{
+    aspect-ratio:900 / 620;
+    object-fit:contain;
   }
 
   #products .category-info{
@@ -3063,8 +3079,9 @@ html[dir="rtl"] .product-search input{
 
   #products .category-card img{
     width:100%;
+    aspect-ratio:900 / 620;
     height:auto!important;
-    object-fit:cover;
+    object-fit:contain;
   }
 
   #products .category-info{
