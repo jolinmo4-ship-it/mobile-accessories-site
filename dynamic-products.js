@@ -284,7 +284,7 @@ function renderProductDetail(product, options = {}) {
   const videoSection = document.querySelector(".product-video-section");
   const productVideo = document.getElementById("productVideo");
   const productName = product?.name || "XiQi Product";
-  const ogTitle = `${productName} | Guangzhou XiQi Technology`;
+  const ogTitle = `${productName} | XiQi Technology`;
   const ogDescription = product.short_desc || product.description || "XiQi OEM and wholesale mobile accessories product details.";
   const images = buildGalleryImages(product);
   const featuredImage = images[0] || "images/logo.png";
@@ -314,7 +314,7 @@ function renderProductDetail(product, options = {}) {
     <div class="detail-right">
       <p class="detail-tag">${escapeHtml(product.category || "MOBILE ACCESSORIES")}</p>
       <h1>${escapeHtml(productName)}</h1>
-      <div class="detail-desc">${escapeHtml(product.description || product.short_desc || "OEM / ODM mobile accessories product from Guangzhou XiQi Technology.")}</div>
+      <div class="detail-desc">${escapeHtml(product.description || product.short_desc || "OEM / ODM mobile accessories product from XiQi Technology.")}</div>
       <div class="detail-badges">
         <span>OEM Support</span>
         <span>Factory Direct</span>

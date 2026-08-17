@@ -261,7 +261,7 @@ function renderCategoryCard(category, index = 0) {
   const name = cleanText(category.name) || "XiQi Category";
   const slug = cleanText(category.slug) || slugify(name);
   const imageUrl = cleanText(category.image_url) || fallbackImageForIndex(index);
-  const description = cleanText(category.description) || "OEM and wholesale mobile accessories from Guangzhou XiQi Technology.";
+  const description = cleanText(category.description) || "OEM and wholesale mobile accessories from XiQi Technology.";
   const link = cleanText(category.link) || `product.html?category=${encodeURIComponent(slug)}`;
 
   return `
