@@ -1,0 +1,19 @@
+{
+  "routes": [
+    {
+      "src": "^/api/ads-data$",
+      "dest": "/api/analytics-query?xiqi_module=ads-csv"
+    },
+    {
+      "src": "^/api/send-inquiry-email/?$",
+      "dest": "/api/send-inquiry"
+    },
+    {
+      "src": "^/sitemap\\.xml$",
+      "dest": "/api/sitemap"
+    },
+    {
+      "handle": "filesystem"
+    }
+  ]
+}

@@ -13,9 +13,9 @@
   <meta property="og:description" content="View XiQi mobile accessories product details, specifications, MOQ, material, packaging and lead time.">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f172a">
-  <link rel="canonical" href="product-detail.html">
+  <link rel="canonical" href="https://www.xi-qi-tech.com/product-detail.html">
   <meta property="og:type" content="product">
-  <meta property="og:url" content="product-detail.html">
+  <meta property="og:url" content="https://www.xi-qi-tech.com/product-detail.html">
   <meta property="og:image" content="images/products-banner.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Product Details | XiQi Technology">
@@ -31,12 +31,16 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="alternate" hreflang="en" href="product-detail.html" />
-  <link rel="alternate" hreflang="fr" href="product-detail.html" />
-  <link rel="alternate" hreflang="es" href="product-detail.html" />
-  <link rel="alternate" hreflang="es-MX" href="product-detail.html" />
-  <link rel="alternate" hreflang="ar" href="product-detail.html" />
-  <link rel="alternate" hreflang="x-default" href="product-detail.html" />
+  <script id="product-breadcrumb-schema" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.xi-qi-tech.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://www.xi-qi-tech.com/product.html" },
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -61,11 +65,12 @@
 
       <a href="product.html">Products</a>
 
-      <a href="#">OEM & ODM</a>
+      <a href="index.html#oem">OEM & ODM</a>
 
-      <a href="#">Factory</a>
+      <a href="index.html#factory">Factory</a>
 
-      <a href="#">Contact</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="inquiry-cart.html" class="inquiry-cart-nav">Inquiry Cart (<span data-inquiry-cart-count>0</span>)</a>
 
     </nav>
 
@@ -204,7 +209,7 @@
 
     </div>
 
-    <a href="https://wa.me/8619127919802" class="whatsapp">
+    <a href="https://wa.me/8617324198395" class="whatsapp">
 
       <img src="images/whatsapp.svg" alt="WhatsApp" width="34" height="34" loading="lazy" decoding="async">
 
@@ -214,9 +219,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="supabase-config.js"></script>
+  <script src="media-fallback.js"></script>
   <script src="js/default-products.js"></script>
+  <script src="analytics-client.js"></script>
   <script src="product-detail.js"></script>
   <script src="dynamic-products.js"></script>
+  <script src="inquiry-cart.js"></script>
   <script src="performance.js"></script>
 <script src="language-switcher.js"></script>
 

@@ -5,6 +5,10 @@
 
 let homeSupabaseClient = null;
 
+document.addEventListener("DOMContentLoaded", () => {
+  loadHomeAllProducts();
+});
+
 const builtInDefaultProducts = [
   {
     name: "Phone Case",
@@ -94,6 +98,118 @@ async function loadHomeCategories() {
     setLoadingState(grid, false);
   }
 }
+
+async function loadHomeAllProducts() {
+  const track = document.querySelector(".home-all-products-track");
+  const previousButton = document.querySelector(".home-all-products-prev");
+  const nextButton = document.querySelector(".home-all-products-next");
+  const stats = document.querySelector(".home-all-products-stats");
+  if (!track || !previousButton || !nextButton || !stats) return;
+
+  let totalProducts = 0;
+  let itemsPerView = 1;
+  let totalPages = 0;
+
+  const updateStats = () => {
+    const cards = [...track.querySelectorAll(".home-all-products-card")];
+    const firstCard = cards[0];
+    const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+    const cardWidth = firstCard?.getBoundingClientRect().width || 0;
+    itemsPerView = cardWidth ? Math.max(1, Math.round((track.clientWidth + gap) / (cardWidth + gap))) : 1;
+    totalPages = totalProducts ? Math.ceil(totalProducts / itemsPerView) : 0;
+    const pageWidth = track.clientWidth || 1;
+    const currentPage = totalPages
+      ? Math.min(totalPages, Math.max(1, Math.floor((track.scrollLeft + pageWidth / 2) / pageWidth) + 1))
+      : 0;
+    stats.textContent = totalProducts
+      ? `${totalProducts} Products · Page ${currentPage} / ${totalPages}`
+      : "0 Products";
+  };
+
+  const updateControls = () => {
+    const hasOverflow = track.scrollWidth > track.clientWidth + 2;
+    previousButton.hidden = !hasOverflow;
+    nextButton.hidden = !hasOverflow;
+    previousButton.disabled = !hasOverflow || track.scrollLeft <= 2;
+    nextButton.disabled = !hasOverflow || track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    updateStats();
+  };
+
+  const scrollProducts = (direction) => {
+    const firstCard = track.querySelector(".home-all-products-card");
+    const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+    const distance = firstCard ? (firstCard.getBoundingClientRect().width + gap) * 3 : track.clientWidth * 0.75;
+    track.scrollBy({ left: direction * distance, behavior: "smooth" });
+  };
+
+  previousButton.addEventListener("click", () => scrollProducts(-1));
+  nextButton.addEventListener("click", () => scrollProducts(1));
+  track.addEventListener("scroll", updateControls, { passive: true });
+  window.addEventListener("resize", updateControls);
+
+  try {
+    const products = await withTimeout(
+      fetchPublishedHomeProducts(createSupabaseClient()),
+      8000,
+      "All products request timed out."
+    );
+    renderHomeAllProducts(track, products);
+    totalProducts = products.length;
+  } catch (error) {
+    console.warn("All products unavailable. Hiding the homepage product carousel.", error);
+    track.innerHTML = '<p class="home-all-products-status" role="status">Products are temporarily unavailable.</p>';
+  } finally {
+    track.classList.remove("is-loading");
+    track.setAttribute("aria-busy", "false");
+    updateControls();
+  }
+}
+
+async function fetchPublishedHomeProducts(client) {
+  const config = window.XIQI_SUPABASE || window.XIQI_CONFIG || {};
+  const productsTable = cleanText(config.productsTable) || "products";
+  const { data, error } = await client
+    .from(productsTable)
+    .select("id,name,image_url,status,sort_order,created_at")
+    .eq("status", "published")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return Array.isArray(data)
+    ? data.filter((product) => cleanText(product.id) && cleanText(product.name))
+    : [];
+}
+
+function renderHomeAllProducts(track, products) {
+  if (!products.length) {
+    track.innerHTML = '<p class="home-all-products-status" role="status">No products available.</p>';
+    return;
+  }
+
+  track.innerHTML = products.map((product) => {
+    const name = cleanText(product.name);
+    const image = cleanText(product.image_url) || "images/phone-case.webp";
+    const href = `product-detail.html?id=${encodeURIComponent(product.id)}`;
+    return `
+      <div class="home-all-products-card">
+        <a class="home-all-products-link" href="${escapeAttribute(href)}">
+        <span class="home-all-products-image">
+          <img src="${escapeAttribute(image)}" alt="${escapeAttribute(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='images/phone-case.webp';">
+        </span>
+        <span class="home-all-products-name">${escapeHtml(name)}</span>
+        </a>
+        <button type="button" class="home-all-products-add-inquiry" data-inquiry-product='${escapeAttribute(JSON.stringify({ id: product.id, name, image_url: image, sku: product.sku, category: product.category }))}'>Add to Inquiry</button>
+      </div>
+    `;
+  }).join("");
+}
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-inquiry-product]");
+  if (!button || !window.XIQI_INQUIRY_CART) return;
+  event.preventDefault();
+  try { window.XIQI_INQUIRY_CART.add(JSON.parse(button.dataset.inquiryProduct)); button.textContent = "Added"; setTimeout(() => { button.textContent = "Add to Inquiry"; }, 1200); } catch (error) { console.warn("Could not add product to inquiry cart.", error); }
+});
 
 function createSupabaseClient() {
   if (homeSupabaseClient) return homeSupabaseClient;

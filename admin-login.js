@@ -14,7 +14,7 @@ checkExistingSession();
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  loginStatus.textContent = "Signing in...";
+  loginStatus.textContent = "登录中...";
   loginButton.disabled = true;
   loginButton.classList.add("is-loading");
 
@@ -29,7 +29,7 @@ loginForm.addEventListener("submit", async (event) => {
     });
 
     if (error) throw error;
-    if (!data.session) throw new Error("Login succeeded but no Supabase session was returned.");
+    if (!data.session) throw new Error("登录成功，但未返回 Supabase 会话。");
 
     await client.auth.setSession({
       access_token: data.session.access_token,
@@ -41,12 +41,12 @@ loginForm.addEventListener("submit", async (event) => {
     } = await client.auth.getSession();
 
     if (!session) {
-      throw new Error("Supabase session was not saved. Please try again.");
+      throw new Error("Supabase 会话未保存，请重试。");
     }
 
     window.location.href = "admin.html";
   } catch (error) {
-    loginStatus.textContent = error.message || "Login failed.";
+    loginStatus.textContent = error.message || "登录失败。";
   } finally {
     loginButton.disabled = false;
     loginButton.classList.remove("is-loading");

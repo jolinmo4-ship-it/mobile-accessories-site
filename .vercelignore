@@ -1,0 +1,11 @@
+.git/
+.env
+.env.*
+.local-tools/
+.release-readonly/
+docs/
+scripts/
+server/test-support/
+backend/
+coverage/
+server/*.test.js

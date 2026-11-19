@@ -17,9 +17,9 @@
   <meta property="og:description" content="Professional OEM mobile accessories manufacturer in China specializing in phone cases, chargers, screen protectors and wholesale mobile accessories.">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f172a">
-  <link rel="canonical" href="index.html">
+  <link rel="canonical" href="https://www.xi-qi-tech.com/">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="index.html">
+  <meta property="og:url" content="https://www.xi-qi-tech.com/">
   <meta property="og:image" content="images/products-banner.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="XiQi Technology - Mobile Accessories Manufacturer">
@@ -34,12 +34,27 @@
 
 <link rel="icon" href="images/logo.png">
   
-  <link rel="alternate" hreflang="en" href="index.html" />
-  <link rel="alternate" hreflang="fr" href="index.html" />
-  <link rel="alternate" hreflang="es" href="index.html" />
-  <link rel="alternate" hreflang="es-MX" href="index.html" />
-  <link rel="alternate" hreflang="ar" href="index.html" />
-  <link rel="alternate" hreflang="x-default" href="index.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.xi-qi-tech.com/#organization",
+        "name": "XiQi Technology",
+        "url": "https://www.xi-qi-tech.com/",
+        "logo": "https://www.xi-qi-tech.com/images/logo.png"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.xi-qi-tech.com/#website",
+        "name": "XiQi Technology",
+        "url": "https://www.xi-qi-tech.com/",
+        "publisher": { "@id": "https://www.xi-qi-tech.com/#organization" }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -66,6 +81,7 @@
     <a href="#factory">Factory</a>
     <a href="#about">About Us</a>
     <a href="#contact">Contact Us</a>
+    <a href="inquiry-cart.html" class="inquiry-cart-nav">Inquiry Cart (<span data-inquiry-cart-count>0</span>)</a>
 
   </nav>
 
@@ -122,7 +138,7 @@
   </a>
 
  <a
-href="https://wa.me/8619127919802"
+href="https://wa.me/8617324198395"
 target="_blank"
 class="btn secondary">
 
@@ -164,6 +180,23 @@ class="btn secondary">
 
   </div>
 
+</section>
+
+<section class="home-all-products" aria-labelledby="home-all-products-title">
+  <div class="home-all-products-heading">
+    <div>
+      <p>ALL PRODUCTS</p>
+      <h2 id="home-all-products-title">Explore Our Products</h2>
+    </div>
+    <div class="home-all-products-controls" aria-label="All products carousel controls">
+      <span class="home-all-products-stats" aria-live="polite">0 Products</span>
+      <button class="home-all-products-prev" type="button" aria-label="Previous products">←</button>
+      <button class="home-all-products-next" type="button" aria-label="Next products">→</button>
+    </div>
+  </div>
+  <div class="home-all-products-viewport">
+    <div class="home-all-products-track is-loading" aria-live="polite" aria-busy="true"></div>
+  </div>
 </section>
 
 <section class="oem-banner">
@@ -276,7 +309,7 @@ class="btn secondary">
     </p>
 
     <a
-    href="https://wa.me/8619127919802"
+    href="https://wa.me/8617324198395"
     target="_blank"
     class="btn primary">
 
@@ -374,6 +407,11 @@ class="btn secondary">
 
       <p>
         <strong>WhatsApp:</strong><br>
+        +86 17324198395
+      </p>
+
+      <p>
+        <strong>Telegram:</strong><br>
         +86 19127919802
       </p>
 
@@ -435,13 +473,13 @@ class="btn secondary">
 
       <h3>Products</h3>
 
-      <a href="#">Phone Cases</a>
+      <a href="product.html?category=Phone%20Cases">Phone Cases</a>
 
-      <a href="#">Chargers</a>
+      <a href="product.html?category=Chargers">Chargers</a>
 
-      <a href="#">Power Banks</a>
+      <a href="product.html?category=Power%20Banks">Power Banks</a>
 
-      <a href="#">Screen Protectors</a>
+      <a href="product.html?category=Screen%20Protectors">Screen Protectors</a>
 
     </div>
 
@@ -451,13 +489,13 @@ class="btn secondary">
 
       <h3>OEM Service</h3>
 
-      <a href="#">OEM & ODM</a>
+      <a href="#oem">OEM & ODM</a>
 
-      <a href="#">Private Label</a>
+      <a href="#oem">Private Label</a>
 
-      <a href="#">Factory Direct</a>
+      <a href="#factory">Factory Direct</a>
 
-      <a href="#">Wholesale</a>
+      <a href="product.html">Wholesale</a>
 
     </div>
 
@@ -467,13 +505,11 @@ class="btn secondary">
 
       <h3>Contact</h3>
 
-      <a href="#">WhatsApp</a>
+      <a href="https://wa.me/8617324198395">WhatsApp</a>
 
-      <a href="#">Email</a>
+      <a href="#contact">Email</a>
 
-      <a href="#">Alibaba</a>
-
-      <a href="#">, China</a>
+      <span>China</span>
 
     </div>
 
@@ -495,7 +531,7 @@ class="btn secondary">
   </div>
 
   <a
-  href="https://wa.me/8619127919802"
+  href="https://wa.me/8617324198395"
   target="_blank"
   class="whatsapp">
 
@@ -508,8 +544,11 @@ class="btn secondary">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script src="supabase-config.js"></script>
+<script src="media-fallback.js"></script>
 <script src="js/default-products.js"></script>
+<script src="analytics-client.js"></script>
 <script src="home-products.js"></script>
+<script src="inquiry-cart.js"></script>
 <script src="inquiry-enhancements.js"></script>
 <script src="performance.js"></script>
 <script src="language-switcher.js"></script>

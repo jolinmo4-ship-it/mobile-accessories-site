@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#0f172a">
-  <title>XiQi Admin Login</title>
-  <meta name="description" content="Secure XiQi admin login.">
+  <title>XiQi 后台登录</title>
+  <meta name="description" content="XiQi 后台安全登录。">
   <link rel="stylesheet" href="admin.css">
   <link rel="icon" href="images/logo.png">
 </head>
@@ -14,20 +14,20 @@
   <main class="login-shell">
     <section class="login-card">
       <p>XiQi Technology</p>
-      <h1>Admin Login</h1>
+      <h1>后台登录</h1>
 
       <form id="loginForm" class="login-form">
         <label>
-          Email
+          邮箱
           <input type="email" name="email" required>
         </label>
 
         <label>
-          Password
+          密码
           <input type="password" name="password" required>
         </label>
 
-        <button type="submit">Login</button>
+        <button type="submit">登录</button>
         <span id="loginStatus"></span>
       </form>
     </section>
@@ -36,5 +36,5 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="supabase-config.js"></script>
   <script src="admin-login.js"></script>
-</body>
+<script src="media-fallback.js"></script></body>
 </html>

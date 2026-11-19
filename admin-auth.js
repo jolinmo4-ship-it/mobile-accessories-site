@@ -1,7 +1,7 @@
 const adminConfig = window.XIQI_CONFIG;
 
 if (!adminConfig) {
-  window.XIQI_ADMIN_AUTH_ERROR = "XIQI_CONFIG missing. Please check supabase-config.js loading order.";
+  window.XIQI_ADMIN_AUTH_ERROR = "缺少 XIQI_CONFIG，请检查 supabase-config.js 的加载顺序。";
 } else {
   window.XIQI_ADMIN_CLIENT = supabase.createClient(adminConfig.url, adminConfig.key, {
     auth: {
@@ -16,6 +16,7 @@ window.XIQI_ADMIN_READY = new Promise((resolve, reject) => {
   document.addEventListener("DOMContentLoaded", async () => {
     try {
       const session = await protectAdminPage();
+      const nav=document.querySelector('.admin-sidebar nav');if(nav&&!nav.querySelector('a[href="admin-ads.html"]')){const a=document.createElement('a');a.href='admin-ads.html';a.textContent='广告投放';nav.appendChild(a);}
       resolve(session);
     } catch (error) {
       reject(error);
@@ -37,7 +38,7 @@ async function protectAdminPage() {
 
   if (error || !session) {
     window.location.href = "admin-login.html";
-    throw new Error("Admin login required.");
+    throw new Error("需要先登录后台。");
   }
 
   await client.auth.setSession({
@@ -46,7 +47,7 @@ async function protectAdminPage() {
   });
 
   const role = getJwtRole(session.access_token);
-  console.log("Supabase admin session:", session.user?.email || "unknown", role);
+  console.log("Supabase session ready.");
 
   window.XIQI_ADMIN_SESSION = session;
   document.body.classList.add("admin-authenticated");

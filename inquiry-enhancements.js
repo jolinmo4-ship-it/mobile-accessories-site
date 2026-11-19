@@ -1,14 +1,9 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("inquiryForm");
 
-  if (!form) return;
+  if (!form || form.dataset.inquiryBound) return;
+  form.dataset.inquiryBound = "true";
 
-  let client = null;
-  try {
-    client = window.XIQI_GET_SUPABASE_CLIENT ? window.XIQI_GET_SUPABASE_CLIENT() : null;
-  } catch (error) {
-    console.warn("Inquiry Supabase client unavailable. Email fallback will still be attempted.", error);
-  }
 
   const button = form.querySelector('button[type="submit"]');
   const status = document.createElement("div");
@@ -29,7 +24,7 @@
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    if (button.disabled) return;
+    if (button.disabled || !form.reportValidity()) return;
 
     setLoading(button, true);
     setStatus(status, "Sending your inquiry...", "");
@@ -43,23 +38,10 @@
     };
 
     try {
-      let savedToDatabase = false;
-
-      if (client) {
-        try {
-          const { error } = await withTimeout(
-            client.from("inquiries").insert([data]),
-            8000,
-            "Inquiry database request timed out."
-          );
-          if (error) throw error;
-          savedToDatabase = true;
-        } catch (databaseError) {
-          console.warn("Inquiry database save failed. Continuing with email fallback.", databaseError);
-        }
-      }
-
-      await sendInquiryEmail(data);
+      const conversionToken = {};
+      const result = await sendInquiryEmail(data);
+      const savedToDatabase = result.savedToDatabase === true;
+      if (result.emailSuppressed !== true) { try { window.XIQI_REPORT_GOOGLE_ADS_CONVERSION?.(conversionToken); } catch { /* Optional tracking. */ } }
       form.reset();
 
       setStatus(
@@ -119,6 +101,7 @@ async function sendInquiryEmail(data) {
       },
       body: JSON.stringify({
         ...data,
+        analytics: window.XIQI_ANALYTICS?.context?.(),
         submitted_at: new Date().toLocaleString()
       }),
       signal: controller.signal
@@ -132,7 +115,7 @@ async function sendInquiryEmail(data) {
       result = {};
     }
 
-    if (!response.ok) {
+    if (!response.ok || result.ok !== true) {
       throw new Error(result.error || `Inquiry email API failed with status ${response.status}`);
     }
 

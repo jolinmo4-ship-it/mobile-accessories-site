@@ -1,0 +1,4 @@
+-- Disable ADS_CSV_IMPORT_ENABLED and redeploy the previous verified release.
+-- Preserve accounts, grants, report rows and audit history. Do not DROP business
+-- data or revoke existing administrator roles automatically.
+-- Removing the new schema or account grants requires separate approval/backup.

@@ -1,0 +1,7 @@
+-- POST-INSTALL READ ONLY: run after approved 008 installation and account grants.
+select jsonb_build_object(
+ 'tables',(select jsonb_agg(jsonb_build_object('name',c.relname,'rls',c.relrowsecurity,'force_rls',c.relforcerowsecurity,'anon_has_access',has_table_privilege('anon',c.oid,'SELECT,INSERT,UPDATE,DELETE'),'authenticated_has_access',has_table_privilege('authenticated',c.oid,'SELECT,INSERT,UPDATE,DELETE')) order by c.relname) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname in ('ads_csv_accounts','ads_csv_access','ads_csv_rows','ads_csv_imports')),
+ 'account',(select jsonb_agg(jsonb_build_object('account_id',account_id,'timezone',timezone)) from public.ads_csv_accounts where account_id='1694910396'),
+ 'access',(select jsonb_agg(jsonb_build_object('user_id',a.user_id,'email',u.email,'can_import',a.can_import,'role_is_admin',u.raw_app_meta_data->>'role'='admin') order by a.user_id) from public.ads_csv_access a join auth.users u on u.id=a.user_id where a.account_id='1694910396'),
+ 'direct_rpc_access',jsonb_build_object('anon',has_function_privilege('anon','public.ads_csv_commit(uuid,uuid,jsonb,jsonb)','EXECUTE'),'authenticated',has_function_privilege('authenticated','public.ads_csv_commit(uuid,uuid,jsonb,jsonb)','EXECUTE'),'service_role',has_function_privilege('service_role','public.ads_csv_commit(uuid,uuid,jsonb,jsonb)','EXECUTE'))
+) as ads_csv_post_install;

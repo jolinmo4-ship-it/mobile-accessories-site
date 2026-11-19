@@ -255,7 +255,11 @@ async function loadProductDetail() {
 
     if (error) throw error;
 
-    renderProductDetail(data || fallbackProduct, { fallback: !data });
+    if (data && typeof data === "object" && data.id) {
+      renderProductDetail(data, { fallback: false, realProduct: true });
+    } else {
+      renderProductDetail(fallbackProduct, { fallback: true });
+    }
   } catch (error) {
     console.warn("Supabase product detail unavailable. Showing fallback detail.", error);
     renderProductDetail(matchFallbackProduct(id) || fallbackProduct, { fallback: true });
@@ -284,6 +288,7 @@ function renderProductDetail(product, options = {}) {
   const videoSection = document.querySelector(".product-video-section");
   const productVideo = document.getElementById("productVideo");
   const productName = product?.name || "XiQi Product";
+  if (options.realProduct) window.XIQI_ANALYTICS?.send("product_view", product.id);
   const ogTitle = `${productName} | XiQi Technology`;
   const ogDescription = product.short_desc || product.description || "XiQi OEM and wholesale mobile accessories product details.";
   const images = buildGalleryImages(product);
@@ -334,16 +339,23 @@ function renderProductDetail(product, options = {}) {
         `).join("")}
       </div>
       <div class="detail-buttons">
+        ${options.realProduct ? `<button type="button" class="btn inquiry-cart-add-button" data-inquiry-product='${escapeAttribute(JSON.stringify({ id: product.id, name: productName, image_url: featuredImage, sku: product.sku, category: product.category }))}'>Add to Inquiry</button>` : ""}
         <a href="index.html?product=${encodeURIComponent(productName)}#contact" class="btn primary">
           Send Inquiry
         </a>
-        <a href="https://wa.me/8619127919802" class="btn secondary">
+        <a href="https://wa.me/8617324198395" class="btn secondary">
           WhatsApp Quick Contact
         </a>
       </div>
       ${options.fallback ? `<p class="related-products-message">Live product data is temporarily unavailable. Showing default product information.</p>` : ""}
     </div>
   `;
+
+  detailPage.querySelector(".inquiry-cart-add-button")?.addEventListener("click", (event) => {
+    if (!window.XIQI_INQUIRY_CART) return;
+    window.XIQI_INQUIRY_CART.add(JSON.parse(event.currentTarget.dataset.inquiryProduct));
+    event.currentTarget.textContent = "Added to Inquiry";
+  });
 
   setupGalleryControls(galleryImages);
 
@@ -366,6 +378,55 @@ function renderProductDetail(product, options = {}) {
   updateMeta("name", "description", ogDescription);
   updateMeta("property", "og:title", ogTitle);
   updateMeta("property", "og:description", ogDescription);
+  const detailUrl = `https://www.xi-qi-tech.com/product-detail.html?id=${encodeURIComponent(product.id || product.slug || productName)}`;
+  updateMeta("property", "og:url", detailUrl);
+  updateMeta("name", "twitter:title", ogTitle);
+  updateMeta("name", "twitter:description", ogDescription);
+  updateMeta("name", "twitter:image", featuredImage);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.href = detailUrl;
+  const schemaNode = document.getElementById("product-schema");
+  if (options.realProduct && product && product.id) {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": productName,
+      "description": ogDescription,
+      "image": galleryImages.map((image) => new URL(image, window.location.href).href),
+      "brand": { "@type": "Brand", "name": "XiQi Technology" },
+      "url": detailUrl
+    };
+    if (product.sku) schema.sku = String(product.sku);
+    const productSchemaNode = schemaNode || document.createElement("script");
+    productSchemaNode.id = "product-schema";
+    productSchemaNode.type = "application/ld+json";
+    productSchemaNode.textContent = JSON.stringify(schema);
+    if (!schemaNode) document.head.appendChild(productSchemaNode);
+  } else if (schemaNode) {
+    schemaNode.remove();
+  }
+
+  const breadcrumbNode = document.getElementById("product-breadcrumb-schema");
+  if (breadcrumbNode && options.realProduct && product && product.id) {
+    breadcrumbNode.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.xi-qi-tech.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://www.xi-qi-tech.com/product.html" },
+        { "@type": "ListItem", "position": 3, "name": productName, "item": detailUrl }
+      ]
+    });
+  } else if (breadcrumbNode) {
+    breadcrumbNode.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.xi-qi-tech.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://www.xi-qi-tech.com/product.html" }
+      ]
+    });
+  }
 }
 
 function renderProductDetailMessage(container, title, message) {
