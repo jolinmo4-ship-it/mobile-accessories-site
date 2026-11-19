@@ -1138,7 +1138,7 @@ function escapeHtml(value) {
 }
 
 function escapeAttribute(value) {
-  return escapeHtml(value).replaceAll("`", "&#096;");
+  return escapeHtml(window.XIQI_MEDIA_TEXT(value)).replaceAll("`", "&#096;");
 }
 
 window.XIQI_ADMIN_READY

@@ -152,7 +152,7 @@ function normalizeCartItems(value) {
 }
 
 function safeImageUrl(value) {
-  const image = safeText(value);
+  const image = require('../server/legacy-media-url').mediaUrl(safeText(value));
   try { const url = new URL(image); return /^https?:$/.test(url.protocol) ? url.href : ""; } catch { return ""; }
 }
 

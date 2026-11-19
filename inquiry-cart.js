@@ -139,7 +139,7 @@
   }
 
   function escapeHtml(value) { return String(value || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
-  function escapeAttribute(value) { return escapeHtml(value); }
+  function escapeAttribute(value) { return escapeHtml(window.XIQI_MEDIA_TEXT(value)); }
 
   window.XIQI_INQUIRY_CART = { read: readCart, add, updateQuantity, remove, clear, count, refresh: updateBadges };
   document.addEventListener("DOMContentLoaded", () => { updateBadges(); bindCartPage(); });

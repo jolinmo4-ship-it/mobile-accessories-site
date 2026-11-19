@@ -360,7 +360,7 @@ function renderProductDetail(product, options = {}) {
   setupGalleryControls(galleryImages);
 
   if (videoSection && productVideo && product.video_url) {
-    productVideo.src = product.video_url;
+    productVideo.src = window.XIQI_MEDIA_URL(product.video_url);
     videoSection.hidden = false;
     productVideo.load();
     productVideo.play().catch(() => {});
@@ -458,7 +458,7 @@ function buildGalleryImages(product) {
     .concat(normalizeGallery(product?.gallery))
     .filter(Boolean);
 
-  return [...new Set(images)];
+  return [...new Set(images.map(window.XIQI_MEDIA_URL))];
 }
 
 function normalizeGallery(value) {
@@ -651,5 +651,5 @@ function escapeHtml(value) {
 }
 
 function escapeAttribute(value) {
-  return escapeHtml(value).replaceAll("`", "&#096;");
+  return escapeHtml(window.XIQI_MEDIA_TEXT(value)).replaceAll("`", "&#096;");
 }

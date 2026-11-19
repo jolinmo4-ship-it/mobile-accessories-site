@@ -110,5 +110,5 @@ function escapeRelatedHtml(value) {
 }
 
 function escapeRelatedAttribute(value) {
-  return escapeRelatedHtml(value).replaceAll("`", "&#096;");
+  return escapeRelatedHtml(window.XIQI_MEDIA_TEXT(value)).replaceAll("`", "&#096;");
 }

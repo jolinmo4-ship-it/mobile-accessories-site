@@ -430,7 +430,7 @@ async function loadFactoryVideo() {
 
 function renderFactoryVideo(video, media) {
   try {
-    const videoUrl = cleanText(media.video_url);
+    const videoUrl = window.XIQI_MEDIA_URL(cleanText(media.video_url));
 
     if (!videoUrl) return;
 
@@ -465,7 +465,7 @@ function escapeHtml(value) {
 }
 
 function escapeAttribute(value) {
-  return escapeHtml(value).replaceAll("`", "&#096;");
+  return escapeHtml(window.XIQI_MEDIA_TEXT(value)).replaceAll("`", "&#096;");
 }
 
 function slugify(value) {
